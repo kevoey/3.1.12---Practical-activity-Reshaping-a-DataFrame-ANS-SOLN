@@ -1,0 +1,354 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "id": "65bfd63b",
+   "metadata": {},
+   "source": [
+    "# Prompt"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "dcaf5919",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#You can continue to work in your own Jupyter Notebook, or you can use the solution file from the previous \n",
+    "#practical activity ( LSE_DA201_PA_apply_groupby_solution.ipynb ) as a starting point for this portion of the analysis.\n",
+    "\n",
+    "#1.Determine the film release date and content rating.\n",
+    "#    Identify the DataFrame to use.\n",
+    "#    Use the pivot() function. \n",
+    "#    Specify the parameters: index (Title), columns (Age) and values (Year).\n",
+    "\n",
+    "#2.Determine the title of movies, the directors, and genres by content rating.\n",
+    "#    Identify the DataFrame to use.\n",
+    "#    Use the pivot() function. \n",
+    "#    Specify the parameters: index (Title), columns (Age) and values (Directors, Genres).\n",
+    "        \n",
+    "#3.Determine the title of movies, the released year, and language by content rating.\n",
+    "#    Identify the DataFrame to use.\n",
+    "#    Use the pivot() function. \n",
+    "#    Specify the parameters: index (Title), columns (Age) and values (Year, Language).\n",
+    "        \n",
+    "#4.Determine the Netflix screened movies based on language, runtime, and country. \n",
+    "#    Identify the DataFrame to use.\n",
+    "#    Use the pivot() function. \n",
+    "#    Specify the parameters: index (Title), columns (Netflix) and values (Runtime, Language, Country).\n",
+    "        \n",
+    "#5.Determine the title of movies, specified language, potential runtime, and genres by content rating.\n",
+    "#    Identify the DataFrame to use.\n",
+    "#    Use the pivot() function. \n",
+    "#    Specify the parameters: index (Title), columns (Age) and values (Runtime, Language, Genres).\n",
+    "        \n",
+    "#6.Save the Notebook to your Github repository by uploading and committing any changes."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "6989010d",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Previous solution\n",
+    "\n",
+    "# Import Pandas.\n",
+    "import pandas as pd\n",
+    "\n",
+    "# Load the Excel data using pd.read_excel.\n",
+    "movies = pd.read_excel('movies_merge.xlsx')\n",
+    "\n",
+    "# Load the csv data using pd.read_csv.\n",
+    "ott = pd.read_csv('ott_merge.csv')\n",
+    "\n",
+    "# Data imported correctly?\n",
+    "print(movies.columns)\n",
+    "print(movies.shape)\n",
+    "print(ott.columns)\n",
+    "print(ott.shape)\n",
+    "\n",
+    "# Merge the two DataFrames.\n",
+    "mov_ott = pd.merge(movies, ott, how='left', on = 'ID')\n",
+    "\n",
+    "# DataFrames merged correctly?\n",
+    "print(mov_ott.columns)\n",
+    "print(mov_ott.shape)\n",
+    "\n",
+    "# Determine the number of movies watched on Netflix since 2012.\n",
+    "mo_gpby = mov_ott.groupby(['Year'])['Netflix'].agg('sum').reset_index()\n",
+    "mo_gpby[mo_gpby['Year'] >= 2012]\n",
+    "\n",
+    "# Determine the average runtime of movies released since 2012.\n",
+    "mo_gpby1 = mov_ott.groupby(['Year'])['Runtime'].agg('mean').reset_index()\n",
+    "mo_gpby1[mo_gpby1['Year'] >= 2012]\n",
+    "\n",
+    "# Determine what was the maximum and minimum review received by Rotten Tomatoes for any movie per year since 2012?\n",
+    "mo_gpby2 = mov_ott.groupby(['Year'])['Rotten Tomatoes'].agg(['min','max']).reset_index()\n",
+    "mo_gpby2[mo_gpby2['Year'] >= 2012]"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "56eaf84b",
+   "metadata": {},
+   "source": [
+    "# My answers"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "cd020c92",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#1.Determine the film release date and content rating.\n",
+    "#    Identify the DataFrame to use.\n",
+    "#    Use the pivot() function. \n",
+    "#    Specify the parameters: index (Title), columns (Age) and values (Year).\n",
+    "\n",
+    "movies = pd.read_excel('movies_merge.xlsx')\n",
+    "movies.pivot(index= \"Title\", columns =\"Age\", values = \"Year\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "80b74900",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#2.Determine the title of movies, the directors, and genres by content rating.\n",
+    "#    Identify the DataFrame to use.\n",
+    "#    Use the pivot() function. \n",
+    "#    Specify the parameters: index (Title), columns (Age) and values (Directors, Genres).\n",
+    "\n",
+    "movies.pivot(index = \"Title\", columns = \"Age\", values =[\"Directors\",\"Genres\"])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "15a7bd01",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#3.Determine the title of movies, the released year, and language by content rating.\n",
+    "#    Identify the DataFrame to use.\n",
+    "#    Use the pivot() function. \n",
+    "#    Specify the parameters: index (Title), columns (Age) and values (Year, Language).\n",
+    "\n",
+    "movies.pivot(index = \"Title\", columns = \"Age\", values = [\"Year\",\"Language\"])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "95a54e42",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#4.Determine the Netflix screened movies based on language, runtime, and country. \n",
+    "#    Identify the DataFrame to use.\n",
+    "#    Use the pivot() function. \n",
+    "#    Specify the parameters: index (Title), columns (Netflix) and values (Runtime, Language, Country).\n",
+    "\n",
+    "mov_ott.pivot(index = \"Title\", columns = \"Netflix\", values = [\"Runtime\",\"Language\",\"Country\"])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "5ca8c8c9",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#5.Determine the title of movies, specified language, potential runtime, and genres by content rating.\n",
+    "#    Identify the DataFrame to use.\n",
+    "#    Use the pivot() function. \n",
+    "#    Specify the parameters: index (Title), columns (Age) and values (Runtime, Language, Genres).\n",
+    "\n",
+    "movies.pivot(index = \"Title\", columns =\"Age\", values = [\"Language\",\"Runtime\",\"Genres\"])"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "7e0ddb50",
+   "metadata": {},
+   "source": [
+    "# LSE's Solution"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "c6fbce59",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Activity 3.1.12 - LSE solution\n",
+    "\n",
+    "# Prepare your workstation\n",
+    "# Import Pandas.\n",
+    "import pandas as pd\n",
+    "\n",
+    "# Load the Excel data using pd.read_excel.\n",
+    "movies = pd.read_excel('movies_merge.xlsx')\n",
+    "\n",
+    "# Load the csv data using pd.read_csv.\n",
+    "ott = pd.read_csv('ott_merge.csv')\n",
+    "\n",
+    "# Data imported correctly?\n",
+    "print(movies.columns)\n",
+    "print(movies.shape)\n",
+    "print(ott.columns)\n",
+    "print(ott.shape)\n",
+    "\n",
+    "# Merge the two DataFrames.\n",
+    "mov_ott = pd.merge(movies, ott, how='left', on = 'ID')\n",
+    "\n",
+    "# DataFrames merged correctly?\n",
+    "print(mov_ott.columns)\n",
+    "print(mov_ott.shape)\n",
+    "\n",
+    "# View the DataFrame.\n",
+    "mov_ott"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "9106b967",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Determine movies per year and age group.\n",
+    "movies.pivot(index='Title', columns='Age', \n",
+    "             values='Year')\n",
+    "\n",
+    "#My answer\n",
+    "movies.pivot(index= \"Title\", columns =\"Age\", values = \"Year\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "178f6bd1",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Determine movies, directors, and genres per age group.\n",
+    "movies.pivot(index='Title', columns='Age', \n",
+    "             values=['Directors', 'Genres'])\n",
+    "\n",
+    "#my naswer\n",
+    "movies.pivot(index = \"Title\", columns = \"Age\", values =[\"Directors\",\"Genres\"])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "8a2aca9c",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Determine movies, year, and language per age group.\n",
+    "movies.pivot(index='Title', columns='Age', \n",
+    "             values=['Year', 'Language'])\n",
+    "\n",
+    "#my answer\n",
+    "movies.pivot(index = \"Title\", columns = \"Age\", values = [\"Year\",\"Language\"])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "e75e9e30",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Determine the language, runtime, and country of movies screened by Netflix.\n",
+    "mov_ott.pivot(index='Title', columns='Netflix', \n",
+    "              values=['Language', 'Runtime', 'Country'])\n",
+    "\n",
+    "#my answer\n",
+    "mov_ott.pivot(index = \"Title\", columns = \"Netflix\", values = [\"Runtime\",\"Language\",\"Country\"])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "95e18dea",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Determine the movies, language, runtime, and genres per age group.\n",
+    "mov_ott.pivot(index='Title', columns='Age', \n",
+    "              values=['Language', 'Runtime','Genres'])\n",
+    "\n",
+    "#my asnwer\n",
+    "movies.pivot(index = \"Title\", columns =\"Age\", values = [\"Language\",\"Runtime\",\"Genres\"])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "e44ea9af",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Reflection\n",
+    "# The last one used mov_ott...why? although...should be the same results considering \n",
+    "# mov_ott is a left join...\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "fd7733f0",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "4a96356b",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "b1f70165",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.8.8"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}
